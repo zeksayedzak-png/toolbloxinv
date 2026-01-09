@@ -819,3 +819,96 @@ massCloneBtn.MouseButton1Click:Connect(function()
     local cloned = 0
     for _, toolData in pairs(originalTools) do
         if not toolData.IsCloned then
+            local clonedTool = createUltimateOriginalClone(toolData.Object)
+            if clonedTool then
+                cloned = cloned + 1
+                
+                -- حقن تلقائي
+                spawn(function()
+                    task.wait(0.2)
+                    injectToInventoryServer(clonedTool)
+                end)
+            end
+            task.wait(0.1)
+        end
+    end
+    
+    statusLabel.Text = "💣 CLONED " .. cloned .. " TOOLS"
+    statusLabel.TextColor3 = Color3.fromRGB(255, 0, 255)
+    
+    notify("MASS CLONE", "Cloned " .. cloned .. " tools!", 5)
+end)
+
+takeoverBtn.MouseButton1Click:Connect(function()
+    statusLabel.Text = "👑 TAKING OVER SERVER TOOL SYSTEM..."
+    statusLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
+    
+    -- إجراءات السيطرة
+    notify("SERVER TAKEOVER", "Initiating tool control...", 3)
+    
+    task.wait(1)
+    statusLabel.Text = "✅ SERVER TOOL CONTROL ENABLED"
+    statusLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+end)
+
+verifyBtn.MouseButton1Click:Connect(function()
+    statusLabel.Text = "🔍 VERIFYING ORIGINALITY..."
+    statusLabel.TextColor3 = Color3.fromRGB(200, 200, 0)
+    
+    local verified = 0
+    for _, toolData in pairs(originalTools) do
+        if toolData.IsCloned then
+            verified = verified + 1
+        end
+    end
+    
+    statusLabel.Text = "🔍 VERIFIED " .. verified .. " ORIGINAL CLONES"
+    statusLabel.TextColor3 = Color3.fromRGB(0, 255, 200)
+    
+    notify("VERIFICATION", verified .. " original clones verified", 3)
+end)
+
+openInvBtn.MouseButton1Click:Connect(function()
+    if openInventory() then
+        statusLabel.Text = "📂 INVENTORY OPENED"
+        statusLabel.TextColor3 = Color3.fromRGB(100, 200, 255)
+        notify("INVENTORY", "Opening inventory...", 2)
+    else
+        statusLabel.Text = "⚠️ INVENTORY NOT FOUND"
+        statusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+    end
+end)
+
+clearBtn.MouseButton1Click:Connect(function()
+    resultsFrame:ClearAllChildren()
+    originalTools = {}
+    clonedTools = {}
+    
+    statusLabel.Text = "🗑️ LIST CLEARED"
+    statusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+    
+    notify("CLEARED", "Tool list cleared", 2)
+end)
+
+-- === التحميل الأولي ===
+notify("ULTIMATE TOOL CLONER", "Version 3.0 - 100% Original Clone System", 5)
+
+-- إشعار تلقائي بعد التحميل
+spawn(function()
+    task.wait(3)
+    statusLabel.Text = "✅ SYSTEM READY - ULTIMATE TOOL DUPLICATOR v3.0"
+    statusLabel.TextColor3 = Color3.fromRGB(0, 255, 150)
+    
+    notify("READY", "Click SCAN SERVER to begin", 3)
+end)
+
+-- معلومات الإصدار
+local versionLabel = Instance.new("TextLabel")
+versionLabel.Text = "v3.0 - ULTIMATE ORIGINAL CLONER"
+versionLabel.Size = UDim2.new(0.3, 0, 0.05, 0)
+versionLabel.Position = UDim2.new(0.69, 0, 0, 0)
+versionLabel.TextColor3 = Color3.fromRGB(150, 150, 255)
+versionLabel.BackgroundTransparency = 1
+versionLabel.Font = Enum.Font.SourceSansBold
+versionLabel.TextSize = 10
+versionLabel.Parent = titleBar
